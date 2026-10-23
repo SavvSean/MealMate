@@ -1,72 +1,125 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0c1114">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>MealMate — Meals, tasks & groceries</title>
-<style>
-:root{color-scheme:dark;--bg:#0c1114;--panel:#171e22;--panel2:#20292d;--line:#2b373c;--text:#f1f5f3;--muted:#99a9ab;--green:#42d798;--green2:#163d32;--orange:#f2bc7d;--radius:20px;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text)}body{padding-bottom:calc(102px + env(safe-area-inset-bottom))}button,input,textarea{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--green);outline-offset:3px}button:disabled{opacity:.4;cursor:not-allowed}.app{max-width:750px;margin:0 auto;padding:24px 18px 42px}.topline{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}.brand{display:flex;align-items:center;gap:12px}.logo{width:43px;height:43px;border-radius:15px;background:var(--green);display:grid;place-items:center;color:#082117;font-size:24px}.brand b{font-size:21px;letter-spacing:-.7px}.brand small{display:block;color:var(--muted);font-size:12px;margin-top:1px}.pill{border:1px solid var(--line);color:var(--muted);padding:8px 11px;border-radius:99px;font-size:12px;font-weight:600}.eyebrow{text-transform:uppercase;font-size:11px;font-weight:800;color:var(--green);letter-spacing:1.6px;margin:0 0 7px}h1{font-size:clamp(28px,6vw,39px);line-height:1.14;letter-spacing:-1.3px;margin:0 0 8px}h2{font-size:21px;letter-spacing:-.5px;margin:0}h3{font-size:16px;margin:0}p{line-height:1.5}.sub{color:var(--muted);font-size:14px;margin:0}.space{margin-top:23px}.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px}.budget{background:linear-gradient(125deg,#163b31 0%,#172627 70%);border:1px solid #2b5a48}.budget-top,.row,.section-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.amount{font-size:35px;font-weight:800;letter-spacing:-1.4px;margin:7px 0}.progress{height:8px;border-radius:99px;background:#37534a;overflow:hidden;margin:15px 0 10px}.progress>span{height:100%;display:block;background:var(--green);border-radius:99px;transition:width .2s}.tiny{font-size:12px;color:var(--muted)}.good{color:var(--green)}.warn{color:var(--orange)}.dates{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:14px}.datebtn{min-width:0;border:1px solid transparent;border-radius:14px;background:var(--panel);color:var(--muted);padding:11px 2px 9px;display:flex;align-items:center;gap:6px;flex-direction:column}.datebtn .dow{font-size:11px}.datebtn b{font-size:17px}.datebtn.active{background:var(--green);color:#092218}.datebtn.today:not(.active){border-color:#467564}.dot{width:4px;height:4px;border-radius:50%;background:var(--green)}.datebtn.active .dot{background:#083323}.section-top{margin:27px 0 13px}.section-top .sub{margin-top:4px}.meal,.task,.grocery{display:flex;gap:12px;align-items:center}.meal+.meal,.task+.task,.grocery+.grocery{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}.check{flex-shrink:0;border:2px solid #5b6d70;background:transparent;color:transparent;border-radius:11px;width:29px;height:29px;display:grid;place-items:center;font-weight:900;font-size:15px}.check.checked{background:var(--green);border-color:var(--green);color:#092218}.entry{flex:1;min-width:0}.entry strong{display:block;font-size:15px;line-height:1.35;overflow-wrap:anywhere}.entry small{display:block;color:var(--muted);font-size:12px;margin-bottom:4px}.entry.done strong{text-decoration:line-through;color:var(--muted)}.edit{background:transparent;border:0;color:var(--muted);padding:8px;font-size:17px;flex-shrink:0}.btn{border:1px solid var(--line);border-radius:13px;padding:12px 15px;background:var(--panel2);color:var(--text);font-weight:700}.btn.primary{background:var(--green);color:#092218;border-color:var(--green)}.btn.ghost{background:transparent}.btn.small{font-size:12px;padding:8px 10px}.btn.full{width:100%}.actionline{display:flex;flex-wrap:wrap;gap:8px;margin-top:15px}.hint{border:1px dashed #465657;border-radius:15px;padding:13px 15px;color:var(--muted);font-size:13px;line-height:1.5}.nav{position:fixed;z-index:9;bottom:0;left:0;right:0;display:flex;justify-content:center;padding:8px 14px calc(9px + env(safe-area-inset-bottom));background:rgba(15,20,22,.96);border-top:1px solid var(--line);backdrop-filter:blur(15px)}.nav-inner{max-width:750px;display:grid;grid-template-columns:repeat(4,1fr);width:100%;gap:6px}.nav button{border:0;background:transparent;color:var(--muted);padding:9px 3px;border-radius:13px;font-size:11px;font-weight:700;display:flex;gap:4px;align-items:center;flex-direction:column}.nav button span{font-size:22px}.nav button.active{background:var(--green2);color:var(--green)}.calendar-head{display:flex;align-items:center;justify-content:space-between;margin:16px 0}.cal-week,.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;gap:5px}.cal-week{font-size:11px;color:var(--muted);padding:0 0 10px}.cal-day{height:49px;background:var(--panel2);border:1px solid transparent;border-radius:12px;color:var(--text);font-weight:600;position:relative}.cal-day.muted{opacity:.28}.cal-day.active{border-color:var(--green);background:var(--green2)}.cal-day.now:after{content:"";width:5px;height:5px;border-radius:100%;position:absolute;bottom:5px;left:calc(50% - 2.5px);background:var(--green)}.cal-day .completed{display:block;font-size:10px;color:var(--green)}.grocery-row .entry small{margin-bottom:2px}.price{font-size:15px;font-weight:800;white-space:nowrap}.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.stat{padding:13px;background:var(--panel2);border-radius:14px}.stat b{display:block;font-size:23px;letter-spacing:-.6px;margin-top:4px}.recipe{margin-top:11px}.recipe-head{display:flex;gap:12px;align-items:center}.recipe-emoji{font-size:30px;background:var(--panel2);border-radius:15px;min-width:55px;min-height:55px;display:grid;place-items:center}.recipe details{margin-top:12px}.recipe summary{color:var(--green);cursor:pointer;font-weight:700;font-size:13px}.recipe ol{padding-left:22px;color:#d7e1e0;font-size:13px;line-height:1.65}.recipe li+li{margin-top:5px}.recipe .sub{font-size:12px}.modal-bg{position:fixed;inset:0;background:#000b;display:none;z-index:20;align-items:flex-end;justify-content:center;padding:16px}.modal-bg.visible{display:flex}.modal{width:min(100%,530px);background:var(--panel);border:1px solid var(--line);border-radius:23px;padding:23px;margin-bottom:env(safe-area-inset-bottom)}.modal h2{margin-bottom:20px}.field{display:block;margin-bottom:13px}.field span{display:block;color:var(--muted);font-size:12px;font-weight:700;margin-bottom:7px}.field input,.field textarea{display:block;background:#0f1518;border:1px solid #3a484c;color:var(--text);width:100%;border-radius:12px;padding:12px;resize:vertical}.modal-actions{display:flex;gap:10px;margin-top:20px}.modal-actions button{flex:1}.empty{text-align:center;color:var(--muted);padding:26px 6px}.note{color:var(--muted);font-size:12px;line-height:1.5}.shopping-header{display:flex;align-items:center;justify-content:space-between;gap:10px}.week-nav{display:flex;gap:6px}.week-nav button{width:35px;height:35px}.divider{border-top:1px solid var(--line);margin:15px 0}.footer{color:#637478;text-align:center;font-size:11px;margin-top:33px;line-height:1.5}@media(min-width:600px){.app{padding:34px 26px 55px}.nav-inner{max-width:680px}.datebtn{padding:16px 0}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f8e9c8">
+  <meta name="description" content="MealMate — a playful kitchen planner with meal tickets, calendar, market checklist and recipes.">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>MealMate! | The Little Kitchen</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="config.js" defer></script>
+  <script src="cloud.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="onboarding.js" defer></script>
 </head>
 <body>
-<main id="app" class="app"></main>
-<nav class="nav"><div class="nav-inner" id="nav"></div></nav>
-<div class="modal-bg" id="modalBg" role="presentation"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><h2 id="modalTitle"></h2><form id="modalForm"><div id="modalFields"></div><div class="modal-actions"><button type="button" class="btn ghost" id="cancelModal">Cancel</button><button type="submit" class="btn primary">Save</button></div></form></div></div>
-<script>
-(()=>{'use strict';
-const MS=86400000;
-const seedGroceries=[['Rice','2 kg',120],['Eggs','10 pieces',90],['Chicken','1.2 kg',280],['Canned sardines','3 cans',90],['Firm tofu','2 packs',80],['Oatmeal','400 g',90],['Bread','1 small loaf',65],['Bananas','7 pieces',65],['Mixed vegetables','Sayote, pechay, cabbage, carrots, tomatoes, malunggay',230],['Milk','Small weekly supply',100],['Garlic, onion, ginger','Small quantities',70],['Soy sauce, vinegar, oil, pepper','Starter allowance',100]];
-const mealPlan=[['2 eggs + rice + banana','Chicken adobo + rice + cabbage','Adobo + rice + vegetables'],['Egg + bread + banana','Adobo + rice + vegetables','Sardines + pechay + rice'],['Oatmeal + banana + milk','Chicken tinola + rice','Tinola + rice'],['2 eggs + rice + tomato','Tinola + rice','Tofu + vegetables + rice'],['Oatmeal + banana + milk','Sardines + pechay + rice','Chicken adobo + rice'],['Egg + bread + banana','Adobo + rice + cabbage','Tofu + vegetables + rice'],['Oatmeal + banana + milk','Chicken tinola + rice','Tinola + rice']];
-const recipes=[
-{icon:'🥚',name:'Eggs with rice & tomato',time:'15–20 min',ingredients:'Eggs, water, cooked rice, tomato',steps:['Use the rice cooker only for boiling/steaming eggs if its instructions permit it. Add water as recommended by the manufacturer.','Cook eggs until both whites and yolks are firm, then cool them in clean water.','Serve with cooked rice and sliced tomato.']},
-{icon:'🥣',name:'Oatmeal & banana',time:'10–15 min',ingredients:'Rolled oats, water or milk, banana',steps:['Add oats and liquid according to the oats package, provided your cooker supports porridge/oatmeal.','Cook while monitoring for foaming or boil-over, following cooker directions.','Top with banana. Milk can also be added after cooking.']},
-{icon:'🐟',name:'Sardines with pechay',time:'10–15 min',ingredients:'1 can sardines, a handful of pechay, small amount of water',steps:['Only if your cooker permits cooking soups/other foods: add sardines and a small splash of water to its pot.','Heat until bubbling, add washed chopped pechay and simmer until wilted and hot throughout.','Serve with separately prepared rice.']},
-{icon:'🥬',name:'Steamed tofu & vegetables',time:'15–25 min',ingredients:'Firm tofu, cabbage, carrots, soy sauce',steps:['If a steamer tray is supplied and approved for your cooker, add water beneath it as the manual directs.','Place sliced carrots and cabbage on the tray, and tofu in a heat-safe bowl or tray according to cooker instructions.','Steam until vegetables are tender and tofu is steaming hot, then add a little soy sauce.']},
-{icon:'🍗',name:'Chicken adobo',time:'35–55 min',ingredients:'Chicken, garlic, soy sauce, vinegar, pepper, water',steps:['Only make this in a cooker expressly designed for simmering meat. Do not rely on a standard rice-only cook/warm cycle.','Combine chicken, crushed garlic, soy sauce, vinegar, pepper and a little water in the approved pot.','Simmer with sufficient liquid until chicken reaches 74°C (165°F) at its thickest point; use a food thermometer.','Cool leftovers promptly in shallow containers and refrigerate within two hours.']},
-{icon:'🍲',name:'Chicken tinola',time:'40–60 min',ingredients:'Chicken, ginger, sayote, malunggay, water',steps:['Only use a cooker approved for cooking raw poultry and simmering soup.','Combine chicken, ginger and water, and simmer until chicken is cooked through.','Add sliced sayote and cook until tender; add malunggay near the end.','Verify chicken reaches 74°C (165°F) with a thermometer.']}
-];
-const app=document.getElementById('app');const nav=document.getElementById('nav');let tab='today',monthCursor=null,modalSave=null;
-const pad=x=>String(x).padStart(2,'0');function localDate(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}function parseDate(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d,12)}function shift(s,n){const d=parseDate(s);d.setDate(d.getDate()+n);return localDate(d)}function monday(s){const d=parseDate(s);d.setDate(d.getDate()-(d.getDay()+6)%7);return localDate(d)}function human(s,opts){return parseDate(s).toLocaleDateString('en-PH',opts)}function dowIdx(s){return (parseDate(s).getDay()+6)%7}function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function uid(){return String(Date.now())+Math.random().toString(36).slice(2,7)}
-let persistent=true;let state={selected:localDate(new Date()),budget:1400,shopping:{},completed:{},mealOverrides:{},tasks:{}};
-try{const stored=JSON.parse(localStorage.getItem('mealmate_v1'));if(stored&&typeof stored==='object')state={...state,...stored};localStorage.setItem('mealmate_test','1');localStorage.removeItem('mealmate_test')}catch(e){persistent=false}
-if(!/^\d{4}-\d{2}-\d{2}$/.test(state.selected))state.selected=localDate(new Date());
-function save(){try{localStorage.setItem('mealmate_v1',JSON.stringify(state));persistent=true}catch(e){persistent=false}}function shoppingFor(w){if(!Array.isArray(state.shopping[w])){state.shopping[w]=seedGroceries.map(([name,qty,price])=>({id:uid(),name,qty,price,checked:false}));save()}return state.shopping[w]}
-function completedFor(s){return state.completed[s]||(state.completed[s]={})}function taskFor(s){if(!Array.isArray(state.tasks[s])){state.tasks[s]=[{id:uid(),text:'Prepare or reheat meals',done:false},{id:uid(),text:'Pack / plan tomorrow’s food',done:false},{id:uid(),text:'Wash your rice cooker',done:false}];save()}return state.tasks[s]}
-function mealFor(s,i){return state.mealOverrides[s]?.[i]??mealPlan[dowIdx(s)][i]}function mealDone(s,i){return !!state.completed[s]?.['meal'+i]}function markMeal(s,i){const a=completedFor(s);a['meal'+i]=!a['meal'+i];save();render()}
-function datestrip(){const start=monday(state.selected);return '<div class="dates">'+Array.from({length:7},(_,i)=>{const date=shift(start,i),active=date===state.selected,now=date===localDate(new Date());return `<button class="datebtn ${active?'active':''} ${now?'today':''}" data-action="date" data-date="${date}" aria-label="${human(date,{dateStyle:'full'})}" aria-pressed="${active}"><span class="dow">${human(date,{weekday:'short'})}</span><b>${parseDate(date).getDate()}</b><span class="dot"></span></button>`}).join('')+'</div>'}
-function budgetCard(){const w=monday(state.selected);const items=shoppingFor(w);const total=items.reduce((a,x)=>a+Number(x.price||0),0),spent=items.filter(x=>x.checked).reduce((a,x)=>a+Number(x.price||0),0),left=state.budget-total;return `<div class="card budget"><div class="budget-top"><span class="tiny">WEEKLY GROCERY PLAN</span><span class="pill">₱200/day goal</span></div><div class="row"><div class="amount">₱${total.toLocaleString('en-PH')}</div><div style="text-align:right"><small class="tiny">${left>=0?'Budget room':'Over budget'}</small><div style="font-weight:800;color:${left>=0?'var(--green)':'var(--orange)'}">${left<0?'-':''}₱${Math.abs(left).toLocaleString('en-PH')}</div></div></div><div class="progress"><span style="width:${Math.max(0,Math.min(100,total/state.budget*100))}%"></span></div><div class="row"><span class="tiny">₱${spent.toLocaleString('en-PH')} checked as bought · ${items.filter(x=>x.checked).length}/${items.length} items</span><button class="btn small ghost" data-action="budget">Edit budget</button></div></div>`}
-function mealRows(s){return `<div class="card">${['Breakfast','Lunch','Dinner'].map((label,i)=>`<div class="meal"><button class="check ${mealDone(s,i)?'checked':''}" data-action="mealcheck" data-index="${i}" aria-label="Mark ${label} complete" aria-pressed="${mealDone(s,i)}">✓</button><div class="entry ${mealDone(s,i)?'done':''}"><small>${label}</small><strong>${esc(mealFor(s,i))}</strong></div><button class="edit" data-action="mealedit" data-index="${i}" aria-label="Edit ${label}">✎</button></div>`).join('')}</div>`}
-function todayView(){const s=state.selected;const tasks=taskFor(s);return `<p class="eyebrow">Your daily routine</p><h1>${s===localDate(new Date())?'Today’s plan':'Meal plan'}</h1><p class="sub">${human(s,{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</p>${datestrip()}<div class="space">${budgetCard()}</div><div class="section-top"><div><h2>What to eat</h2><p class="sub">Check off each meal as you go</p></div></div>${mealRows(s)}<div class="section-top"><div><h2>To do</h2><p class="sub">Small steps, less hassle</p></div><button class="btn small" data-action="taskadd">+ Add</button></div><div class="card">${tasks.length?tasks.map(t=>`<div class="task"><button class="check ${t.done?'checked':''}" data-action="taskcheck" data-id="${esc(t.id)}" aria-label="Mark task complete" aria-pressed="${t.done}">✓</button><div class="entry ${t.done?'done':''}"><strong>${esc(t.text)}</strong></div><button class="edit" data-action="taskedit" data-id="${esc(t.id)}" aria-label="Edit or delete task">✎</button></div>`).join(''):'<div class="empty">No tasks yet. Add one above.</div>'}</div><div class="actionline"><button class="btn primary" data-action="go" data-tab="groceries">🛒 Grocery checklist →</button><button class="btn" data-action="go" data-tab="recipes">🍳 Learn recipes</button></div>${!persistent?'<p class="note warn">Your browser is blocking local storage. For reliable saving, publish this HTML on GitHub Pages and open the hosted address.</p>':''}`}
-function calendarView(){const s=state.selected;const m=monthCursor||s.slice(0,7);const first=parseDate(m+'-01');const n=new Date(first.getFullYear(),first.getMonth()+1,0).getDate();const off=(first.getDay()+6)%7;let boxes='';for(let i=0;i<Math.ceil((off+n)/7)*7;i++){const val=i-off+1;if(val<1||val>n){boxes+='<div></div>';continue}const d=m+'-'+pad(val);const comp=[0,1,2].filter(i=>mealDone(d,i)).length;boxes+=`<button class="cal-day ${d===s?'active':''} ${d===localDate(new Date())?'now':''}" data-action="date" data-date="${d}" data-goto="calendar">${val}${comp?`<span class="completed">${comp}/3 ✓</span>`:''}</button>`}return `<p class="eyebrow">Look ahead</p><h1>Meal calendar</h1><p class="sub">Tap a date to see or edit that day’s plan.</p><div class="card space"><div class="calendar-head"><button class="btn small" data-action="month" data-delta="-1">‹</button><h2>${first.toLocaleDateString('en-PH',{month:'long',year:'numeric'})}</h2><button class="btn small" data-action="month" data-delta="1">›</button></div><div class="cal-week">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(x=>`<span>${x}</span>`).join('')}</div><div class="cal-grid">${boxes}</div><div class="actionline"><button class="btn small ghost" data-action="jumpnow">Jump to today</button></div></div><div class="section-top"><div><h2>${human(s,{weekday:'long',month:'short',day:'numeric'})}</h2><p class="sub">Your planned meals</p></div><button class="btn small" data-action="go" data-tab="today">Open day →</button></div>${mealRows(s)}`}
-function groceriesView(){const w=monday(state.selected), end=shift(w,6),items=shoppingFor(w);const total=items.reduce((s,x)=>s+Number(x.price||0),0),purchased=items.filter(x=>x.checked).reduce((s,x)=>s+Number(x.price||0),0);return `<p class="eyebrow">Shopping made simple</p><h1>To buy</h1><p class="sub">A fresh checklist for each week. Prices are estimates.</p><div class="card space"><div class="shopping-header"><div><span class="tiny">SHOPPING WEEK</span><h3>${human(w,{month:'short',day:'numeric'})} – ${human(end,{month:'short',day:'numeric'})}</h3></div><div class="week-nav"><button class="btn small" data-action="week" data-delta="-7" aria-label="Previous week">‹</button><button class="btn small" data-action="week" data-delta="7" aria-label="Next week">›</button></div></div><div class="summary-grid"><div class="stat"><span class="tiny">Estimated total</span><b>₱${total.toLocaleString('en-PH')}</b></div><div class="stat"><span class="tiny">Checked as bought</span><b class="good">₱${purchased.toLocaleString('en-PH')}</b></div></div><div class="progress"><span style="width:${items.length?items.filter(x=>x.checked).length/items.length*100:0}%"></span></div><div class="row"><span class="tiny">${items.filter(x=>x.checked).length}/${items.length} items checked</span><span class="tiny ${total>state.budget?'warn':'good'}">${total>state.budget?'₱'+(total-state.budget).toLocaleString('en-PH')+' over':'₱'+(state.budget-total).toLocaleString('en-PH')+' remaining'}</span></div></div><div class="section-top"><div><h2>Shopping checklist</h2><p class="sub">Tap a circle when it’s in your cart</p></div><button class="btn small primary" data-action="groceryadd">+ Add item</button></div><div class="card">${items.length?items.map(g=>`<div class="grocery grocery-row"><button class="check ${g.checked?'checked':''}" data-action="grocerycheck" data-id="${esc(g.id)}" aria-label="Toggle ${esc(g.name)}" aria-pressed="${g.checked}">✓</button><div class="entry ${g.checked?'done':''}"><strong>${esc(g.name)}</strong><small>${esc(g.qty)}</small></div><div class="price">₱${Number(g.price||0).toLocaleString('en-PH')}</div><button class="edit" data-action="groceryedit" data-id="${esc(g.id)}" aria-label="Edit or remove ${esc(g.name)}">✎</button></div>`).join(''):'<div class="empty">Your list is empty. Add an item above.</div>'}</div><div class="actionline"><button class="btn" data-action="uncheck">↺ Uncheck all</button><button class="btn" data-action="copy">⧉ Copy list</button><button class="btn ghost" data-action="budget">Set budget</button></div><p class="note">Each week starts with the suggested starter list. Edits and checkmarks are saved on this device, for that specific week.</p>`}
-function recipesView(){return `<p class="eyebrow">Cook with confidence</p><h1>Easy recipes</h1><p class="sub">Rice-cooker-friendly ideas to go with your plan.</p><div class="space hint">⚠️ Check your rice cooker’s manual before cooking foods other than rice. A basic Cook/Warm cooker may not safely support chicken, simmering, or steaming without the right accessory. Use a food thermometer for poultry.</div>${recipes.map(r=>`<div class="card recipe"><div class="recipe-head"><div class="recipe-emoji">${r.icon}</div><div><h3>${esc(r.name)}</h3><p class="sub">${esc(r.time)} · ${esc(r.ingredients)}</p></div></div><details><summary>See cooking steps ↓</summary><ol>${r.steps.map(t=>`<li>${esc(t)}</li>`).join('')}</ol></details></div>`).join('')}<div class="space hint">Food safety: promptly refrigerate cooked rice and other perishables within two hours. Use refrigerated leftovers within 3–4 days, and reheat thoroughly.</div>`}
-function render(){if(!['today','calendar','groceries','recipes'].includes(tab))tab='today';const curr={today:'🏠',calendar:'📅',groceries:'🛒',recipes:'🍳'};nav.innerHTML=Object.entries(curr).map(([key,ico])=>`<button data-action="go" data-tab="${key}" class="${tab===key?'active':''}" aria-current="${tab===key?'page':'false'}"><span>${ico}</span>${{today:'Today',calendar:'Calendar',groceries:'To buy',recipes:'Recipes'}[key]}</button>`).join('');app.innerHTML=`<header class="topline"><div class="brand"><div class="logo">🍚</div><div><b>MealMate</b><small>Eat well, spend less.</small></div></div><span class="pill">₱200/day</span></header>`+({today:todayView,calendar:calendarView,groceries:groceriesView,recipes:recipesView}[tab]())+'<p class="footer">Saved only in this browser · No account needed · Data does not sync across devices.</p>'}
-const bg=document.getElementById('modalBg'),form=document.getElementById('modalForm');function modal(title,fields,fn){document.getElementById('modalTitle').textContent=title;document.getElementById('modalFields').innerHTML=fields.map(f=>`<label class="field"><span>${esc(f.label)}</span><input name="${esc(f.key)}" type="${f.type||'text'}" ${f.type==='number'?'min="0" step="1"':''} value="${esc(f.value)}" ${f.required?'required':''} maxlength="${f.type==='number'?'12':'200'}"></label>`).join('');modalSave=fn;bg.classList.add('visible');document.body.style.overflow='hidden';const first=form.querySelector('input');if(first)setTimeout(()=>first.focus(),50)}function closeModal(){bg.classList.remove('visible');document.body.style.overflow='';modalSave=null}function askDelete(kind,id){if(!confirm('Remove this '+kind+'?'))return false;return true}
-document.getElementById('cancelModal').addEventListener('click',closeModal);bg.addEventListener('click',e=>{if(e.target===bg)closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});form.addEventListener('submit',e=>{e.preventDefault();const data=Object.fromEntries(new FormData(form));if(modalSave)modalSave(data);closeModal();save();render()});
-document.addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(!b||bg.classList.contains('visible'))return;const a=b.dataset.action,s=state.selected,i=Number(b.dataset.index),w=monday(s),id=b.dataset.id;switch(a){
-case'go':tab=b.dataset.tab;break;
-case'date':state.selected=b.dataset.date;if(b.dataset.goto)tab=b.dataset.goto;break;
-case'week':state.selected=shift(monday(s),Number(b.dataset.delta));break;
-case'month':{const p=monthCursor||s.slice(0,7),d=parseDate(p+'-01');d.setMonth(d.getMonth()+Number(b.dataset.delta));monthCursor=localDate(d).slice(0,7);break}
-case'jumpnow':state.selected=localDate(new Date());monthCursor=state.selected.slice(0,7);break;
-case'mealcheck':markMeal(s,i);return;
-case'mealedit':modal('Edit '+['breakfast','lunch','dinner'][i],[{key:'meal',label:'Meal',value:mealFor(s,i),required:true}],d=>{state.mealOverrides[s]??={};state.mealOverrides[s][i]=d.meal.trim()});return;
-case'taskcheck':{const t=taskFor(s).find(x=>x.id===id);if(t)t.done=!t.done;break}
-case'taskadd':modal('Add a task',[{key:'text',label:'What do you need to do?',value:'',required:true}],d=>{if(d.text.trim())taskFor(s).push({id:uid(),text:d.text.trim(),done:false})});return;
-case'taskedit':{const t=taskFor(s).find(x=>x.id===id);if(!t)return;modal('Edit task',[{key:'text',label:'Task (leave blank to remove)',value:t.text}],d=>{if(d.text.trim())t.text=d.text.trim();else if(askDelete('task'))state.tasks[s]=taskFor(s).filter(x=>x.id!==id)});return}
-case'grocerycheck':{const g=shoppingFor(w).find(x=>x.id===id);if(g)g.checked=!g.checked;break}
-case'groceryadd':modal('Add grocery item',[{key:'name',label:'Item name',value:'',required:true},{key:'qty',label:'Quantity',value:'1'},{key:'price',label:'Estimated price (₱)',value:'0',type:'number'}],d=>{if(d.name.trim())shoppingFor(w).push({id:uid(),name:d.name.trim(),qty:d.qty.trim(),price:Math.max(0,Number(d.price)||0),checked:false})});return;
-case'groceryedit':{const g=shoppingFor(w).find(x=>x.id===id);if(!g)return;modal('Edit grocery item',[{key:'name',label:'Item name (leave blank to remove)',value:g.name},{key:'qty',label:'Quantity',value:g.qty},{key:'price',label:'Estimated price (₱)',value:String(g.price),type:'number'}],d=>{if(!d.name.trim()){if(askDelete('item'))state.shopping[w]=shoppingFor(w).filter(x=>x.id!==id)}else{g.name=d.name.trim();g.qty=d.qty.trim();g.price=Math.max(0,Number(d.price)||0)}});return}
-case'uncheck':if(confirm('Uncheck all items for this week?'))shoppingFor(w).forEach(x=>x.checked=false);break;
-case'budget':modal('Set weekly budget',[{key:'amount',label:'Budget (₱ per week)',value:String(state.budget),type:'number',required:true}],d=>{state.budget=Math.max(1,Number(d.amount)||1400)});return;
-case'copy':{const list=shoppingFor(w).map(g=>`${g.checked?'[x]':'[ ]'} ${g.name} — ${g.qty} — ₱${g.price}`).join('\n');const txt=`MealMate: ${w} grocery list\n`+list;const fallback=()=>{const t=document.createElement('textarea');t.value=txt;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove();alert('List copied!')};if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(txt).then(()=>alert('List copied!')).catch(fallback);else fallback();return}
-}save();render()});
-render();
-})();
-</script>
+  <div class="outer-frame">
+    <div class="cabinet-top" aria-hidden="true"><span>✳</span> WELCOME TO YOUR LITTLE KITCHEN <span>✳</span></div>
+    <div class="cabinet-panel">
+      <div class="grain grain-left" aria-hidden="true"></div>
+      <main id="app" class="app" aria-live="polite"></main>
+      <div class="grain grain-right" aria-hidden="true"></div>
+    </div>
+    <div class="cabinet-bottom" aria-hidden="true">✦ &nbsp; GOOD FOOD · GOOD DAYS &nbsp; ✦</div>
+  </div>
+  <nav class="nav" aria-label="Kitchen stations"><div class="nav-inner" id="nav"></div></nav>
+  <div class="modal-bg" id="modalBg" role="presentation">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-ornament" aria-hidden="true">✳ KITCHEN NOTE ✳</div>
+      <h2 id="modalTitle"></h2>
+      <form id="modalForm">
+        <div id="modalFields"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn ghost" id="cancelModal">Never mind</button>
+          <button type="submit" class="btn primary">Save ticket ✓</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-bg recipe-modal-bg" id="recipeBg" role="presentation">
+    <section class="modal recipe-editor" role="dialog" aria-modal="true" aria-labelledby="recipeDialogTitle">
+      <div class="modal-ornament">✳ THE KITCHEN NOTEBOOK ✳</div>
+      <h2 id="recipeDialogTitle">A fresh recipe ticket!</h2>
+      <p class="recipe-form-intro">One line per ingredient and one line per step. Write it your way!</p>
+      <form id="recipeForm">
+        <input type="hidden" id="recipeEditId" name="editId" value="">
+        <label class="field"><span>Dish name *</span><input id="recipeName" name="name" required maxlength="90" placeholder="e.g. Lola's garlic rice"></label>
+        <div class="recipe-form-row">
+          <label class="field"><span>Prep / cook time</span><input id="recipeTime" name="time" maxlength="60" placeholder="e.g. 20–30 min"></label>
+          <label class="field"><span>Recipe sticker</span><select id="recipeIcon" name="icon"><option value="pot">Cooking pot</option><option value="egg">Eggs</option><option value="chicken">Chicken</option><option value="fish">Fish</option><option value="veg">Vegetables</option><option value="oats">Oatmeal</option><option value="bread">Bread</option><option value="rice">Rice</option></select></label>
+        </div>
+        <label class="field"><span>Ingredients * <small>— one per line</small></span><textarea id="recipeIngredients" name="ingredients" rows="5" required maxlength="4200" placeholder="2 eggs&#10;1 cup cooked rice&#10;1 tomato"></textarea></label>
+        <label class="field"><span>Cooking instructions * <small>— one step per line</small></span><textarea id="recipeSteps" name="steps" rows="6" required maxlength="9000" placeholder="Wash and prepare ingredients.&#10;Cook using the appropriate settings.&#10;Serve while warm."></textarea></label>
+        <p class="recipe-form-error" id="recipeFormError" role="alert"></p>
+        <div class="modal-actions"><button type="button" class="btn ghost" id="recipeCancel">Cancel</button><button type="submit" class="btn primary">Save recipe ✳</button></div>
+      </form>
+    </section>
+  </div>
+  <div class="modal-bg" id="authBg" role="presentation">
+    <section class="modal auth-modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+      <div class="modal-ornament" aria-hidden="true">✳ YOUR KITCHEN KEY ✳</div>
+      <h2 id="authTitle">Open your cloud kitchen</h2>
+      <p class="auth-explainer" id="authExplainer">Sign in to save your meals and market lists across devices.</p>
+      <form id="authForm" autocomplete="on">
+        <label class="field"><span>Email</span><input id="authEmail" type="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></label>
+        <div class="field auth-password-field"><label for="authPassword">Password</label><div class="password-wrap"><input id="authPassword" type="password" autocomplete="current-password" required minlength="6" placeholder="At least 8 characters"><button type="button" class="password-eye" id="togglePassword" aria-label="Show password" aria-pressed="false">Show</button></div></div>
+        <div class="field auth-password-field" id="confirmPasswordField" hidden><label for="authPasswordConfirm">Confirm password</label><div class="password-wrap"><input id="authPasswordConfirm" type="password" autocomplete="new-password" minlength="8" placeholder="Type your password again"><button type="button" class="password-eye" id="toggleConfirmPassword" aria-label="Show confirmation password" aria-pressed="false">Show</button></div></div>
+        <button class="btn primary auth-submit" type="submit" id="authSubmit">Sign in</button>
+      </form>
+      <div class="auth-signed-in" id="authSignedIn" hidden>
+        <div class="account-email" id="accountEmail"></div>
+        <div class="chef-profile">
+          <div class="profile-heading">✳ PUBLIC CHEF PROFILE ✳</div>
+          <label class="field" for="chefDisplayName"><span>Community chef name</span><input id="chefDisplayName" maxlength="24" minlength="2" autocomplete="off" placeholder="e.g. Chef Kyoku's Pal" aria-describedby="chefNameHint"></label>
+          <small id="chefNameHint">2–24 characters. Letters, numbers, spaces, hyphens and underscores. This name is shown publicly beside your shared recipes.</small>
+          <button type="button" class="btn accent" id="saveChefDisplayName">Save chef name</button>
+        </div>
+        <button class="btn accent" type="button" id="syncNow">Sync now</button>
+        <button class="btn ghost" type="button" id="downloadKitchenBackup" hidden>Download saved recovery copy</button>
+        <button class="btn ghost" type="button" id="signOut">Sign out</button>
+      </div>
+      <p class="auth-message" id="authMessage" role="status" aria-live="polite"></p>
+      <button class="auth-switch" type="button" id="authSwitch">New here? Create an account</button>
+      <button class="btn tour-helper-link" type="button" data-tour-replay>🎩 Replay chef tutorial</button>
+      <button class="btn ghost auth-close" type="button" id="closeAuth">Back to kitchen</button>
+    </section>
+  </div>
+  <div class="modal-bg kitchen-choice-bg" id="kitchenChoiceBg" role="presentation" hidden>
+    <section class="modal kitchen-choice" role="dialog" aria-modal="true" aria-labelledby="kitchenChoiceTitle" aria-describedby="kitchenChoiceText">
+      <div class="modal-ornament">✳ A NOTE FROM YOUR KITCHEN ✳</div>
+      <h2 id="kitchenChoiceTitle">A fresh start</h2>
+      <p id="kitchenChoiceText"></p>
+      <label class="field kitchen-choice-input" id="kitchenChoiceInputField" hidden><span id="kitchenChoiceInputLabel">Public chef name</span><input id="kitchenChoiceInput" maxlength="24" autocomplete="off"></label>
+      <p class="auth-message" id="kitchenChoiceError" role="alert"></p>
+      <div class="kitchen-choice-actions">
+        <button class="btn primary" id="kitchenChoiceYes" type="button">Continue</button>
+        <button class="btn ghost" id="kitchenChoiceNo" type="button">Cancel</button>
+        <button class="btn ghost kitchen-choice-third" id="kitchenChoiceLater" type="button" hidden>Not now</button>
+      </div>
+    </section>
+  </div>
+  <div class="tour-overlay" id="tutorialOverlay" hidden>
+    <div class="tour-shade" aria-hidden="true"></div>
+    <section class="tour-dialog" role="dialog" aria-modal="true" aria-labelledby="tourTitle" aria-describedby="tourExplanation">
+      <div class="tour-ribbon"><span>✳ MEALMATE · KITCHEN TRAINING ✳</span><button type="button" class="tour-skip" id="tourSkip">Skip tutorial ×</button></div>
+      <div class="tour-main">
+        <div class="tour-mascot-area" aria-hidden="true"><div id="tourChef"></div><span class="tour-chef-tag">CHEF ♡</span></div>
+        <div class="tour-speech">
+          <span class="tour-kicker" id="tourKicker"></span>
+          <h2 id="tourTitle" tabindex="-1"></h2>
+          <p id="tourExplanation"></p>
+          <div id="tourIllustration"></div>
+        </div>
+      </div>
+      <div class="tour-footer">
+        <button type="button" class="tour-control" id="tourBack">← Back</button>
+        <div class="tour-progress-area"><span class="tour-counter" id="tourCount"></span><div class="tour-dots" id="tourProgress"></div></div>
+        <button type="button" class="tour-control primary" id="tourNext">Show me around!</button>
+      </div>
+    </section>
+  </div>
 </body>
 </html>
