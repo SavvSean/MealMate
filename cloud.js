@@ -36,21 +36,30 @@
       sessionHandler(data.session?.user || null);
     },
     async login(email, password) {
-      const { data, error } = await client.auth.signInWithPassword({email, password});
-      if (error) throw error;
-      return data;
+      const captchaToken = await window.MealMateTurnstile.getToken('auth');
+      try {
+        const { data, error } = await client.auth.signInWithPassword({email, password, options: {captchaToken}});
+        if (error) throw error;
+        return data;
+      } finally { window.MealMateTurnstile.reset('auth'); }
     },
     async signup(email, password) {
-      const { data, error } = await client.auth.signUp({email, password});
-      if (error) throw error;
-      return data;
+      const captchaToken = await window.MealMateTurnstile.getToken('auth');
+      try {
+        const { data, error } = await client.auth.signUp({email, password, options: {captchaToken}});
+        if (error) throw error;
+        return data;
+      } finally { window.MealMateTurnstile.reset('auth'); }
     },
     // Password recovery uses the same Auth client/session as the main kitchen.
     async sendPasswordRecovery(email) {
       if (!client) throw new Error('Cloud connection unavailable.');
       const redirectTo = `${window.location.origin}${window.location.pathname}?mealmate_recovery=1`;
-      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
-      if (error) throw error;
+      const captchaToken = await window.MealMateTurnstile.getToken('recovery');
+      try {
+        const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo, captchaToken });
+        if (error) throw error;
+      } finally { window.MealMateTurnstile.reset('recovery'); }
     },
     async getRecoveryUser() {
       if (!client) return null;

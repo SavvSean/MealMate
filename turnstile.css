@@ -1,0 +1,11 @@
+/* Light cabinet-themed shell for Cloudflare Turnstile */
+.mm-captcha-wrapper {
+  width: 100%; box-sizing: border-box; margin: 10px 0 15px;
+  padding: 10px; border: 2px solid #8a5b3c; border-radius: 12px;
+  background: #fff9e9;
+}
+.mm-captcha-label { margin: 0 0 7px; color: #6b432b; font-size: 12px;
+  font-weight: 800; letter-spacing: .3px; }
+.mm-captcha-widget { min-height: 65px; max-width: 100%; }
+.mm-captcha-note { margin: 5px 0 0; color: #75583c; font-size: 11px; }
+.mm-captcha-note[data-error="true"] { color: #b73528; font-weight: 700; }
