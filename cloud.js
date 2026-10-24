@@ -7,6 +7,7 @@
   const enabled = /^https:\/\/[\w-]+\.supabase\.co\/?$/.test(url) && !!key && !!window.supabase?.createClient;
   let client = null;
   let sessionHandler = () => {};
+  let recoveryHandler = () => {};
   if (enabled) client = window.supabase.createClient(url, key, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
@@ -18,10 +19,14 @@
   const api = {
     enabled,
     onSession(fn) { sessionHandler = fn; },
+    onPasswordRecovery(fn) { recoveryHandler = fn; },
     async init() {
       if (!client) return;
       // auth events may fire while the client initializes; defer any async database work.
       client.auth.onAuthStateChange((event, session) => {
+        if (event === 'PASSWORD_RECOVERY') {
+          setTimeout(() => recoveryHandler(session), 0);
+        }
         if (['SIGNED_IN', 'SIGNED_OUT', 'INITIAL_SESSION', 'USER_UPDATED'].includes(event)) {
           setTimeout(() => sessionHandler(session?.user || null), 0);
         }
@@ -39,6 +44,29 @@
       const { data, error } = await client.auth.signUp({email, password});
       if (error) throw error;
       return data;
+    },
+    // Password recovery uses the same Auth client/session as the main kitchen.
+    async sendPasswordRecovery(email) {
+      if (!client) throw new Error('Cloud connection unavailable.');
+      const redirectTo = `${window.location.origin}${window.location.pathname}?mealmate_recovery=1`;
+      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo });
+      if (error) throw error;
+    },
+    async getRecoveryUser() {
+      if (!client) return null;
+      const { data, error } = await client.auth.getUser();
+      if (error) return null;
+      return data.user || null;
+    },
+    async setRecoveredPassword(password) {
+      if (!client) throw new Error('Cloud connection unavailable.');
+      // Server verifies the recovery-session JWT; the browser does not handle passwords directly.
+      const { data, error } = await client.auth.updateUser({ password });
+      if (error) throw error;
+      // End the temporary recovery session and ask the user to sign in again.
+      const result = await client.auth.signOut();
+      if (result.error) return { updated: true, signedOut: false };
+      return { updated: !!data.user, signedOut: true };
     },
     async logout() {
       const { error } = await client.auth.signOut();
