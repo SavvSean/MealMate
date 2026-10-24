@@ -1,0 +1,9 @@
+/* MealMate legal footer and signup-policy links: no generic emoji characters */
+.mealmate-legal-links{max-width:815px;margin:8px auto 2px;padding:11px 8px 18px;text-align:center;color:#ffe2b8;font-size:12px;font-weight:850;letter-spacing:.3px}
+.mealmate-legal-links nav{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px 11px}
+.mealmate-legal-links a{color:#fff2d5;text-decoration:underline;text-underline-offset:3px}
+.mealmate-legal-links a:hover{color:white}
+.mealmate-legal-links a:focus-visible,.mealmate-auth-legal a:focus-visible{outline:3px solid #4394b0;outline-offset:3px}
+.mealmate-beta-tag{display:block;margin-top:5px;font-size:9px;letter-spacing:1.6px;color:#ffd692}
+.mealmate-auth-legal{text-align:center;line-height:1.55;max-width:390px;margin:0 auto 12px;padding:0 8px;font-size:12px;color:#765540}
+.mealmate-auth-legal a{font-weight:800;color:#814522;text-decoration:underline;text-underline-offset:2px}
