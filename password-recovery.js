@@ -86,8 +86,9 @@
     passwordForm.hidden = next !== 'password';
     byId('mmRecoveryTitle').textContent = next === 'password' ? 'A fresh Kitchen Key!' : 'Find your Kitchen Key!';
     byId('mmRecoveryIntro').textContent = next === 'password'
-      ? 'Your recovery link is ready. Choose a new password to reopen your kitchen.'
+      ? 'We must verify an email recovery link before updating your Kitchen Key.'
       : 'Enter the email for your kitchen. We’ll send a secure recovery link.';
+    byId('mmRecoveryUpdate').disabled = next === 'password' && !recoveryVerified;
     cancel.textContent = next === 'password' ? 'Back to sign in' : 'Back to kitchen';
   }
   function show(which, note = '', kind = 'info') {
@@ -114,6 +115,8 @@
   }
   function hide() {
     if (requestInProgress) return;
+    // A recovery-only UI authorization is short lived. Closing the panel discards it.
+    recoveryVerified = false;
     overlay.hidden = true;
     document.body.classList.remove('mm-recovery-open');
     passwordForm.reset();
@@ -197,6 +200,13 @@
   passwordForm.addEventListener('submit', async e => {
     e.preventDefault();
     if (requestInProgress) return;
+    // A valid ordinary sign-in session is NOT proof of a password-recovery email.
+    // This flag is set only after Supabase emits PASSWORD_RECOVERY.
+    if (!recoveryVerified) {
+      setMode('email');
+      setMessage('This address is not a verified recovery link. Request a new email to reset your password.', 'error');
+      return;
+    }
     const first = byId('mmRecoveryPassword').value;
     const second = byId('mmRecoveryConfirm').value;
     if (first.length < 8) {setMessage('Choose a password with at least 8 characters.', 'error');return;}
@@ -208,6 +218,8 @@
       // Verify the Supabase server recognizes the recovery session before updating.
       const user = await cloud.getRecoveryUser();
       if (!user) {
+        recoveryVerified = false;
+        setMode('email');
         setMessage('Your recovery link has expired or isn’t valid. Request another email to try again.', 'error');
         return;
       }
@@ -228,42 +240,50 @@
       console.warn('MealMate password update failed:', error?.status || error?.code || 'request failed');
     } finally {
       requestInProgress = false;
-      byId('mmRecoveryUpdate').disabled = false;
+      byId('mmRecoveryUpdate').disabled = mode !== 'password' || !recoveryVerified;
     }
   });
 
-  async function showRecoveryFromLink() {
-    recoveryVerified = true;
+  // This callback is invoked ONLY by the Supabase PASSWORD_RECOVERY auth event.
+  // Neither ?mealmate_recovery=1 nor a normal SIGNED_IN/INITIAL_SESSION event
+  // can prove that a recovery email link was followed.
+  async function showRecoveryFromLink(session) {
+    if (!session?.user) return;
+    recoveryVerified = false;
     show('password', 'Checking your secure recovery link…');
     const user = await cloud.getRecoveryUser();
     if (overlay.hidden) return;
-    if (user) setMessage('Your link is verified. Create a new password below.', 'success');
-    else setMessage('That link could not be verified. Try refreshing once, or request another recovery email.', 'error');
+    if (!user || user.id !== session.user.id) {
+      recoveryVerified = false;
+      setMode('email');
+      setMessage('We could not verify that recovery link. Request a fresh email.', 'error');
+      return;
+    }
+    recoveryVerified = true;
+    byId('mmRecoveryUpdate').disabled = false;
+    setMessage('Your recovery email link is verified! Choose a new password.', 'success');
   }
-  cloud.onPasswordRecovery(() => { void showRecoveryFromLink(); });
+  cloud.onPasswordRecovery(session => { void showRecoveryFromLink(session); });
 
-  // Supabase may restore the session before the UI finishes initializing on an iPhone.
-  // The query flag lets us render the recovery screen even if the event was earlier.
-  // Clear any literal token fragment only after the Supabase client has parsed it.
+  // URL text controls presentation only; it NEVER authorizes a password change.
+  // A normal logged-in session plus this URL is not sufficient. The actual
+  // PASSWORD_RECOVERY event must arrive from Supabase to unlock the form.
   const query = new URLSearchParams(location.search);
   const hash = new URLSearchParams(location.hash.replace(/^#/, ''));
   if (query.has(modalMarker) || hash.get('type') === 'recovery') {
     const error = query.get('error_code') || hash.get('error_code');
     if (error) {
-      show('email', 'Your recovery link is invalid or expired. Enter your email to request another one.', 'error');
+      show('email', 'This link is invalid or expired. Enter your email to request a new one.', 'error');
     } else {
-      show('password', 'Checking your secure recovery link…');
-      // The Cloud adapter initializes as part of app.js. Checking again slightly later
-      // handles both fresh redirects and refreshes of the recovery URL.
-      let attempts = 0;
-      const check = async () => {
-        if (overlay.hidden || !['password'].includes(mode) || recoveryVerified) return;
-        const user = await cloud.getRecoveryUser();
-        if (user) {recoveryVerified=true;setMessage('Your link is verified. Create a new password below.', 'success');}
-        else if (++attempts < 8) setTimeout(check, 350);
-        else setMessage('We couldn’t verify this recovery link. Request another email.', 'error');
-      };
-      setTimeout(check, 350);
+      show('password', 'Checking for a verified recovery email link…');
+      // If Supabase never emits PASSWORD_RECOVERY, the URL is not sufficient.
+      // Fall back safely to requesting a new link, even when already signed in.
+      setTimeout(() => {
+        if (overlay.hidden || recoveryVerified) return;
+        recoveryVerified = false;
+        setMode('email');
+        setMessage('No verified recovery link was detected. Request a fresh link to reset your password.', 'error');
+      }, 7000);
     }
   }
 })();
