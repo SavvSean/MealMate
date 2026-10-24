@@ -83,13 +83,13 @@
   function picture(type) {
     const common = 'aria-hidden="true"';
     const drawings = {
-      welcome: `<div class="demo-welcome"><div class="demo-sun">✳</div><span class="demo-woodsign">OPEN FOR GOOD FOOD</span><div class="demo-smallplates"><span>🍳</span><span>🍚</span><span>🥬</span></div></div>`,
+      welcome: `<div class="demo-welcome"><div class="demo-sun">✳︎</div><span class="demo-woodsign">OPEN FOR GOOD FOOD</span><div class="demo-smallplates"><span>🍳</span><span>🍚</span><span>🥬</span></div></div>`,
       counter: `<div class="demo-ticket"><span class="demo-tiny">ORDER #001 · BREAKFAST</span><div class="demo-tline"><span class="demo-favicon">🍳</span><b>Eggs + rice + banana</b><span class="demo-stamp">✓</span></div><small>Tap a stamp when your meal is done!</small></div>`,
       planner: `<div class="demo-week"><div class="demo-weektitle">YOUR LITTLE WEEK</div><div class="demo-days">${['M','T','W','T','F','S','S'].map((d,i)=>`<div class="${i===2?'chosen':''}">${d}<b>${i+19}</b></div>`).join('')}</div><div class="demo-weekline">✎ Wednesday · Plan a lunch</div></div>`,
-      market: `<div class="demo-receipt"><div class="demo-receipt-title">✳ MARKET SLIP ✳</div><div><span>☑</span> Eggs <small>₱90</small></div><div><span>□</span> Rice <small>₱120</small></div><div class="demo-receipt-total">IN THE JAR: ₱200 / DAY</div></div>`,
+      market: `<div class="demo-receipt"><div class="demo-receipt-title">✳︎ MARKET SLIP ✳︎</div><div><span>☑</span> Eggs <small>₱90</small></div><div><span>□</span> Rice <small>₱120</small></div><div class="demo-receipt-total">IN THE JAR: ₱200 / DAY</div></div>`,
       cookbook: `<div class="demo-cookbook"><span class="demo-book-icon">📖</span><div><b>Eggs with rice & tomato</b><small>INGREDIENTS · 15 MIN</small><em>1. Prepare ingredients<br>2. Cook safely<br>3. Serve & enjoy!</em></div></div>`,
       cloud: `<div class="demo-cloud"><span>☁</span><b>CLOUD SAVED</b><small>Your little kitchen travels with you.</small><div class="demo-devices">▣ &nbsp; ⇄ &nbsp; ▯</div></div>`,
-      finish: `<div class="demo-finish"><span>✦ ✳ ✦</span><strong>YOU DID IT!</strong><span>🥘 🌱 🍚</span></div>`
+      finish: `<div class="demo-finish"><span>✦ ✳︎ ✦</span><strong>YOU DID IT!</strong><span>🥘 🌱 🍚</span></div>`
     };
     return `<div class="tour-demo tour-demo-${type}" ${common}>${drawings[type] || drawings.welcome}</div>`;
   }
