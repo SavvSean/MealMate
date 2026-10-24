@@ -139,15 +139,26 @@
     }
   }
 
-  // Prepare widgets when forms are opened, rather than waiting for submission.
+  // Wait until MealMate finishes opening/swapping the dialog in its own click
+  // handler. queueMicrotask ran too early in some browsers and displayed a stale
+  // "verification form is not ready" warning before the form became visible.
+  function prepareVisibleForm(context) {
+    setTimeout(() => {
+      const formId = context === 'auth' ? 'authForm' : 'mmRecoveryEmailForm';
+      const form = document.getElementById(formId);
+      // Hidden or closed dialogs are not verification failures.
+      if (!form || form.hidden || form.getClientRects().length === 0) return;
+      void prepare(context).catch(err => displayError(context, err.message));
+    }, 0);
+  }
   document.addEventListener('click', event => {
     const button = event.target.closest('button');
     if (!button) return;
     if (button.matches('[data-action="account"],#authSwitch')) {
-      queueMicrotask(() => { void prepare('auth').catch(err => displayError('auth', err.message)); });
+      prepareVisibleForm('auth');
     }
     if (button.matches('#mealMateForgotPassword,#mmRecoveryAnother')) {
-      queueMicrotask(() => { void prepare('recovery').catch(err => displayError('recovery', err.message)); });
+      prepareVisibleForm('recovery');
     }
   });
   window.MealMateTurnstile = { getToken, reset, prepare };
